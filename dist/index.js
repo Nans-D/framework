@@ -2634,6 +2634,9 @@
         this.trigger("save");
       });
     }
+    getAllProps() {
+      return this.attributes.getAllProps();
+    }
   };
 
   // src/user/User.ts
@@ -2744,11 +2747,77 @@
     }
   };
 
+  // src/user/UserList.ts
+  var UserList = class extends View {
+    constructor() {
+      super(...arguments);
+      this.collection = User.buildCollection();
+      this.changeUser = () => {
+        const selectElement = document.querySelector(
+          "#userSelect"
+        );
+        const selectedUserId = selectElement.value;
+        console.log(selectedUserId);
+        if (selectedUserId) {
+          const selectedUser = this.collection.models.find(
+            (user) => user.get("id") === selectedUserId
+          );
+          if (selectedUser) {
+            const userData = selectedUser.getAllProps();
+            document.querySelector(".user-show").innerHTML = `
+        <div>
+            <h1>User Show</h1>
+            <div>User name : ${userData.name}</div>
+            <div>User age : ${userData.age}</div>
+        </div>
+        `;
+          }
+        }
+      };
+    }
+    initialize() {
+      this.collection.on("change", () => {
+        this.renderUsers(this.collection.models);
+      });
+      this.collection.fetch();
+    }
+    renderUsers(users) {
+      users.forEach((user) => {
+        this.addUserOption(user.getAllProps());
+      });
+    }
+    addUserOption(user) {
+      const option = document.createElement("option");
+      option.value = user.id;
+      option.text = user.name;
+      const selectElement = document.getElementById(
+        "userSelect"
+      );
+      selectElement.appendChild(option);
+    }
+    template() {
+      return `
+      <div>
+      <h1>User List</h1>
+        <select id="userSelect">
+          <option value="">Select a user</option>
+        </select>
+      </div>
+    `;
+    }
+    eventsMap() {
+      return {
+        "change:#userSelect": this.changeUser
+      };
+    }
+  };
+
   // src/user/UserShow.ts
   var UserShow = class extends View {
     template() {
       return `
         <div>
+        <h1>User Show</h1>
             <div>User name : ${this.model.get("name")}</div>
             <div>User age : ${this.model.get("age")}</div>
         </div>
@@ -2760,6 +2829,7 @@
   var UserEdit = class extends View {
     regionsMap() {
       return {
+        userList: ".user-list",
         userShow: ".user-show",
         userForm: ".user-form"
       };
@@ -2767,12 +2837,16 @@
     template() {
       return `
             <div>
+                <div class="user-list"></div>
                 <div class="user-show"></div>
                 <div class="user-form"></div>
             </div>
         `;
     }
     onRender() {
+      const userList = new UserList(this.regions.userList, this.model);
+      userList.initialize();
+      userList.render();
       new UserShow(this.regions.userShow, this.model).render();
       new UserForm(this.regions.userForm, this.model).render();
     }

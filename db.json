@@ -2,22 +2,13 @@
   "users": [
     {
       "id": "7383",
+      "name": "bouboul",
       "age": 45
     },
     {
       "id": "beb9",
       "name": "Alice",
       "age": 34
-    },
-    {
-      "id": "dc08",
-      "name": "rere",
-      "age": 59
-    },
-    {
-      "id": "c203",
-      "name": "Nans",
-      "age": 22
     }
   ]
 }

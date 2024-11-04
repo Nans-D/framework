@@ -51,4 +51,8 @@ export class Model<P extends HasId> {
       this.trigger("save");
     });
   }
+
+  getAllProps(): P {
+    return this.attributes.getAllProps();
+  }
 }
