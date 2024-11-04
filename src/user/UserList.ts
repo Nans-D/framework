@@ -58,6 +58,7 @@ export class UserList extends View<User, UserProps> {
       );
       if (selectedUser) {
         const userData = selectedUser.getAllProps();
+        this.model.set(userData);
 
         document.querySelector(".user-show")!.innerHTML = `
         <div>

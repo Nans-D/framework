@@ -28,7 +28,6 @@ export class User extends Model<UserProps> {
 
   setRandomAge() {
     this.set({ age: Math.floor(Math.random() * 99 + 1) });
-    console.log(this.get("name"));
   }
 
   // signature de méthod : portée, nom, argument, retour

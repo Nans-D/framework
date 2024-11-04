@@ -2657,7 +2657,6 @@
     }
     setRandomAge() {
       this.set({ age: Math.floor(Math.random() * 99 + 1) });
-      console.log(this.get("name"));
     }
     // signature de méthod : portée, nom, argument, retour
   };
@@ -2764,6 +2763,7 @@
           );
           if (selectedUser) {
             const userData = selectedUser.getAllProps();
+            this.model.set(userData);
             document.querySelector(".user-show").innerHTML = `
         <div>
             <h1>User Show</h1>
