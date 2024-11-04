@@ -47,6 +47,7 @@ export abstract class View<T extends Model<P>, P extends HasId> {
 
   render() {
     this.parent.innerHTML = "";
+
     const templateElement = document.createElement("template");
     templateElement.innerHTML = this.template();
 

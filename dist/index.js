@@ -2764,6 +2764,9 @@
           if (selectedUser) {
             const userData = selectedUser.getAllProps();
             this.model.set(userData);
+            document.querySelector(
+              "#userSelect"
+            ).innerHTML = `<option value="${userData.id}">${userData.name}</option>`;
             document.querySelector(".user-show").innerHTML = `
         <div>
             <h1>User Show</h1>
